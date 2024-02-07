@@ -273,18 +273,11 @@ class _SearchDataScreenState extends State<SearchDataScreen> {
                                       children: [
                                         Text(
                                           state
-                                                      .search
-                                                      .searchData
-                                                      .searchProductData[index]
-                                                      .productName
-                                                      .length >
-                                                  25
-                                              ? '${state.search.searchData.searchProductData[index].productName.substring(0, 25)}...'
-                                              : state
                                                   .search
                                                   .searchData
                                                   .searchProductData[index]
                                                   .productName,
+                                          overflow: TextOverflow.ellipsis,
                                           maxLines: 1,
                                           style: const TextStyle(
                                             fontSize: 13,

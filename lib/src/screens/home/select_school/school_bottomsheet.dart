@@ -84,19 +84,6 @@ class _SchoolSheetState extends State<SchoolSheet> {
                 const SizedBox(
                   height: 12,
                 ),
-                // const Padding(
-                //   padding: EdgeInsets.only(left: 10),
-                //   child: Align(
-                //     alignment: Alignment.topLeft,
-                //     child: Text(
-                //       'Select School:',
-                //       style: TextStyle(
-                //         fontSize: 21,
-                //         fontWeight: FontWeight.w500,
-                //       ),
-                //     ),
-                //   ),
-                // ),
                 Container(
                   padding: const EdgeInsets.all(1),
                   child: ListView.builder(

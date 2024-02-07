@@ -78,8 +78,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView (
+        child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Form(
@@ -100,7 +100,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                   ),
                   Image.asset(
                     'assets/img/f_password.jpg',
-                    height: 300,
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    width: MediaQuery.of(context).size.width,
                   ),
                   const SizedBox(
                     height: 10,

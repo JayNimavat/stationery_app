@@ -249,15 +249,12 @@ class _TodayDealState extends State<TodayDeal> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.todayData.todaydealData[index]
-                                                    .productName.length >
-                                                25
-                                            ? '${state.todayData.todaydealData[index].productName.substring(0, 25)}...'
-                                            : state
+                                        state
                                                 .todayData
                                                 .todaydealData[index]
                                                 .productName,
                                         maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontSize: 13,
                                           color: Colors.black,

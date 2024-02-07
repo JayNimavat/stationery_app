@@ -39,8 +39,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               error: 'An error occurred while remove item from cart'));
         }
       } catch (error) {
-        //  print("REMOVE CART ERROR: $error");
-        emit(CartErrorState(error: 'An error occurred in REMOVE CART EVENT'));
+         // print("--REMOVE CART ERROR--: $error");
+        emit(CartErrorState(error: 'An error occurred in REMOVE CART'));
       }
     });
   }

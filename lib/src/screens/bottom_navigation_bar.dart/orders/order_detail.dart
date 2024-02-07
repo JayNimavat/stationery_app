@@ -9,7 +9,6 @@ import 'package:task_1/src/screens/home/bloc/home_count/bloc_home_count.dart';
 import 'package:task_1/src/screens/home/bloc/home_count/event_home_count.dart';
 import 'package:task_1/src/screens/home/products/products_screen.dart';
 import 'package:easy_stepper/easy_stepper.dart';
-import 'package:task_1/src/screens/bottom_navigation_bar.dart/orders/webview.dart';
 
 class OrderDetailScreen extends StatefulWidget {
   final String orderId;
@@ -60,16 +59,6 @@ class OrderDetail extends StatefulWidget {
 }
 
 class _OrderDetailState extends State<OrderDetail> {
-  void _handleURLButtonPress(BuildContext context, String url) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => const WebPage(
-                url:
-                    "smailo.shreehariinfosolution.com/mobilePDF/eyJpdiI6ImsvNmhGWEJNNm10NkNzSjVNTEtNWUE9PSIsInZhbHVlIjoib1c3T3ZoUDZMNDFFTTdNK3RTc1l2Zz09IiwibWFjIjoiOTc3NWZkYTczZGJhZjY5Y2Q1NWEzNDI1NzI0NjdmM2I3MDFjZGFkZGUxOTRhMGY0OTU1ZTM3MDQwMGY1MDQ2YiIsInRhZyI6IiJ9",
-              )),
-    );
-  }
 
   int activeStep = 1;
 
@@ -265,13 +254,7 @@ class _OrderDetailState extends State<OrderDetail> {
                                   backgroundColor: Colors.white,
                                   elevation: 2,
                                 ),
-                                onPressed: () {
-                                  _handleURLButtonPress(
-                                    context,
-                                    state.orderDetailData.orderDetailModelData
-                                        .orderDetail.invoiceUrl,
-                                  );
-                                },
+                                onPressed: () {},
                                 child: const Text(
                                   'Invoice',
                                   style: TextStyle(color: Colors.cyan),
@@ -440,7 +423,6 @@ class _OrderDetailState extends State<OrderDetail> {
                                     text: 'x',
                                     style: const TextStyle(
                                       color: Colors.black45,
-                                      // fontSize: 18,
                                     ),
                                     children: <TextSpan>[
                                       TextSpan(
@@ -457,13 +439,6 @@ class _OrderDetailState extends State<OrderDetail> {
                                     ],
                                   ),
                                 ),
-                                // Text(
-                                //   state.orderDetailData.orderDetailModelData
-                                //       .orderDetail.orderItem[index].quantity,
-                                //   style: const TextStyle(
-                                //     color: Colors.black45,
-                                //   ),
-                                // ),
                               ),
                             ],
                           ),

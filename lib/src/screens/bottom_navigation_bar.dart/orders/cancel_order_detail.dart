@@ -77,7 +77,7 @@ class _CancelOrderDataState extends State<CancelOrderData> {
       appBar: AppBar(
         toolbarHeight: 50,
         elevation: 0,
-        title: const Text('Order Details'),
+        title: const Text('Cancel Order Details'),
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

@@ -49,9 +49,6 @@ class EditUserProfile extends StatefulWidget {
 
 class _EditUserProfileState extends State<EditUserProfile> {
   final formGlobalKey = GlobalKey<FormState>();
-//  final TextEditingController name = TextEditingController();
-  // final TextEditingController _email = TextEditingController();
-  // final TextEditingController _phone = TextEditingController();
   final TextEditingController _pwd = TextEditingController();
   final TextEditingController _cnfpwd = TextEditingController();
 
@@ -181,7 +178,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       const Text('Name'),
                       SizedBox(
                         height: 50,
-                        width: 400,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -219,7 +215,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       const Text('Phone'),
                       SizedBox(
                         height: 50,
-                        width: 400,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -257,7 +252,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       const Text('Email'),
                       SizedBox(
                         height: 50,
-                        width: 400,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -303,9 +297,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                                       mobileNo: phone.text,
                                       email: email.text));
                               _showToast('User Profile Updated SuccessFully');
-                              // print('NAME:$name');
-                              // print('PHONE:$phone');
-                              // print('EMAIL:$email');
                             },
                             child: Container(
                               height: 35,
@@ -344,7 +335,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       const Text('Enter New Password'),
                       SizedBox(
                         height: 50,
-                        width: 400,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -396,7 +386,6 @@ class _EditUserProfileState extends State<EditUserProfile> {
                       const Text('Re-Enter New Password'),
                       SizedBox(
                         height: 50,
-                        width: 400,
                         child: Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),

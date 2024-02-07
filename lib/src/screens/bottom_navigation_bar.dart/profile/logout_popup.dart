@@ -17,6 +17,9 @@ class _LogoutPopupState extends State<LogoutPopup> {
       content: const Text('Are you want to Logout..?'),
       actions: [
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
           onPressed: () {
             Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
@@ -29,6 +32,9 @@ class _LogoutPopupState extends State<LogoutPopup> {
           child: const Text('YES'),
         ),
         ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },

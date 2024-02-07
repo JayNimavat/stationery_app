@@ -311,7 +311,7 @@ class _BrandsState extends State<Brands> {
                                   },
                                   child: Container(
                                     margin: const EdgeInsets.only(
-                                        left: 4.0, right: 4.0),
+                                        left: 4.0, right: 4.0,),
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(8.0),
                                       color: Colors.white,
@@ -352,19 +352,12 @@ class _BrandsState extends State<Brands> {
                                             children: [
                                               Text(
                                                 state
-                                                            .brandswiseProductData
-                                                            .brandswiseProductModelData[
-                                                                index]
-                                                            .productName
-                                                            .length >
-                                                        25
-                                                    ? '${state.brandswiseProductData.brandswiseProductModelData[index].productName.substring(0, 25)}...'
-                                                    : state
                                                         .brandswiseProductData
                                                         .brandswiseProductModelData[
                                                             index]
                                                         .productName,
                                                 maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                   fontSize: 13,
                                                   color: Colors.black,

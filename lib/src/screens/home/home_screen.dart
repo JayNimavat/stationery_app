@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_1/src/screens/cart/bloc/cart/cart_bloc.dart';
 import 'package:task_1/src/screens/cart/bloc/cart/cart_event.dart';
+import 'package:task_1/src/screens/cart/bloc/cart/cart_state.dart';
 import 'package:task_1/src/screens/home/bloc/home_count/bloc_home_count.dart';
 import 'package:task_1/src/screens/home/bloc/home_count/event_home_count.dart';
 import 'package:task_1/src/screens/home/bloc/home_count/state_home_count.dart';
@@ -76,6 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentPage = 0;
   Timer? _timer;
   bool isBannerDataLoaded = false;
+
   @override
   void initState() {
     super.initState();
@@ -147,7 +149,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   StreamController<CombinedBloc> streamController =
-      StreamController<CombinedBloc>();
+  StreamController<CombinedBloc>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,8 +186,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, state) {
                     if (state is HomeCountLoadedState) {
                       if (state.homeCountData.homeCountModelData.favoriteCount
-                              .toString() ==
+                          .toString() ==
                           '0') {
+
                         return Container();
                       } else {
                         return Badge(
@@ -226,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   builder: (context, state) {
                     if (state is HomeCountLoadedState) {
                       if (state.homeCountData.homeCountModelData.cartCount
-                              .toString() ==
+                          .toString() ==
                           '0') {
                         return Container();
                       } else {
@@ -252,28 +256,36 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: StreamBuilder<CombinedBloc>(
-        stream: streamController.stream,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasData) {
-            if (isBannerDataLoaded) {
-              final bannerState = snapshot.data!.bannerState;
-              final secondBannerListState =
-                  snapshot.data!.secondBannerListState;
-              if (bannerState is BannerLoadedState) {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: SizedBox(
-                          height: 50,
-                          width: 400,
+      body: MultiBlocListener(
+        listeners: [BlocListener<CartBloc, CartState>(
+            listener: (context, state) {
+              print('IF');
+              if (state is AddToCartLoadedState) {
+                BlocProvider.of<HomeCountBloc>(context)
+                    .add(HomeCountBtnEvent());
+              }
+            },
+          ),
+        ],
+        child: StreamBuilder<CombinedBloc>(
+          stream: streamController.stream,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasData) {
+              if (isBannerDataLoaded) {
+                final bannerState = snapshot.data!.bannerState;
+                final secondBannerListState =
+                    snapshot.data!.secondBannerListState;
+                if (bannerState is BannerLoadedState) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -282,6 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             elevation: 4,
                             child: Container(
                               padding: const EdgeInsets.only(left: 12),
+                              height: 45,
                               child: TextFormField(
                                 autofocus: false,
                                 controller: search,
@@ -311,638 +324,628 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      SizedBox(
-                        height: 200,
-                        width: 380,
-                        child: Stack(
-                          alignment: Alignment.bottomCenter,
-                          children: [
-                            PageView.builder(
-                              itemCount:
-                                  bannerState.bannerData.bannerlistData.length,
-                              controller: _pageController,
-                              itemBuilder: (BuildContext context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: Image.network(
-                                      bannerState.bannerData
-                                          .bannerlistData[index].image,
-                                      fit: BoxFit.fill,
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        SizedBox(
+                          height: 200,
+                          // width: 380,
+                          child: Stack(
+                            alignment: Alignment.bottomCenter,
+                            children: [
+                              PageView.builder(
+                                itemCount: bannerState
+                                    .bannerData.bannerlistData.length,
+                                controller: _pageController,
+                                itemBuilder: (BuildContext context, index) {
+                                  return Container(
+                                    margin: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: Image.network(
+                                        bannerState.bannerData
+                                            .bannerlistData[index].image,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              Positioned(
+                                left: 165,
+                                bottom: 15,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    bannerState
+                                        .bannerData.bannerlistData.length,
+                                        (index) => Container(
+                                      width: 10,
+                                      height: 10,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 4),
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: _currentPage == index
+                                            ? Colors.blue
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const TodayDealScreen(),
                                   ),
                                 );
                               },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.45,
+                                height: 90,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(left: 8),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/today.png',
+                                        height: 50,
+                                        width: 40,
+                                      ),
+                                      const Text(
+                                        'Today Deal',
+                                        style: TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
-                            Positioned(
-                              left: 165,
-                              bottom: 15,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: List.generate(
-                                  bannerState.bannerData.bannerlistData.length,
-                                  (index) => Container(
-                                    width: 10,
-                                    height: 10,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 4),
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: _currentPage == index
-                                          ? Colors.blue
-                                          : Colors.grey,
-                                    ),
+                            InkWell(
+                              onTap: () async {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                    const FlashDealScreen(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.45,
+                                height: 90,
+                                margin: const EdgeInsets.all(5),
+                                padding: const EdgeInsets.only(right: 8),
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/img/flash.png',
+                                        height: 50,
+                                        width: 40,
+                                      ),
+                                      const Text(
+                                        'Flash Deal',
+                                        style: TextStyle(
+                                          color: Colors.black45,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          InkWell(
-                            onTap: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const TodayDealScreen(),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        if (secondBannerListState
+                        is SecondBannerListLoadedState)
+                          ListView.builder(
+                            itemCount: secondBannerListState
+                                .secondBannerListData
+                                .secondBannerListModelData
+                                .length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width - 30,
+                                  height: 150,
+                                  margin: const EdgeInsets.all(5),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Image.network(
+                                      secondBannerListState
+                                          .secondBannerListData
+                                          .secondBannerListModelData[index]
+                                          .image,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
                                 ),
                               );
                             },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 207,
-                              height: 90,
-                              margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Card(
-                                color: Colors.white,
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/today.png',
-                                      height: 50,
-                                      width: 40,
-                                    ),
-                                    const Text(
-                                      'Today Deal',
-                                      style: TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
+                          )
+                        else
+                          const Center(child: Text('ERROR IN SECOND BANNER')),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Featured Categories",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () async {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const FlashDealScreen(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width - 207,
-                              height: 90,
-                              margin: const EdgeInsets.all(5),
-                              padding: const EdgeInsets.only(right: 8),
-                              child: Card(
-                                color: Colors.white,
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      'assets/img/flash.png',
-                                      height: 50,
-                                      width: 40,
-                                    ),
-                                    const Text(
-                                      'Flash Deal',
-                                      style: TextStyle(
-                                        color: Colors.black45,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                              const SizedBox(
+                                height: 5,
                               ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      if (secondBannerListState is SecondBannerListLoadedState)
-                        ListView.builder(
-                          itemCount: secondBannerListState.secondBannerListData
-                              .secondBannerListModelData.length,
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return InkWell(
-                              onTap: () {},
-                              child: Container(
-                                width: MediaQuery.of(context).size.width - 30,
-                                height: 150,
-                                margin: const EdgeInsets.all(5),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                  child: Image.network(
-                                    secondBannerListState.secondBannerListData
-                                        .secondBannerListModelData[index].image,
-                                    fit: BoxFit.fill,
-                                  ),
+                              GridView.builder(
+                                padding: const EdgeInsets.all(2),
+                                gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 0.3,
+                                  mainAxisSpacing: 3.0,
+                                  childAspectRatio:
+                                  (MediaQuery.of(context).size.height * 1) /
+                                      (1.5 * 185),
                                 ),
-                              ),
-                            );
-                          },
-                        )
-                      else
-                        const Center(child: Text('ERROR IN SECOND BANNER')),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          children: [
-                            const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 10,
-                                  ),
-                                  child: Text(
-                                    "Featured Categories",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            GridView.builder(
-                              padding: const EdgeInsets.all(2),
-                              gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 0.3,
-                                mainAxisSpacing: 3.0,
-                                childAspectRatio:
-                                    (MediaQuery.of(context).size.height * 1) /
-                                        (1.5 * 185),
-                              ),
-                              shrinkWrap: true,
-                              itemCount: catList.length,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () async {
-                                    String? openType =
-                                        catList[index]['openType'];
-                                    if (openType == 'products_page') {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const ProductsWidget(),
-                                        ),
-                                      );
-                                    } else if (openType == 'features_page') {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const Features(),
-                                        ),
-                                      );
-                                    } else if (openType ==
-                                        'bottom_sheet_brands') {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        showDragHandle: true,
-                                        isScrollControlled: true,
-                                        //  barrierColor: Colors.transparent,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(15.0)),
-                                        ),
-                                        builder: (context) =>
-                                            const BrandsBottomSheet(),
-                                      );
-                                    } else if (openType ==
-                                        'bottom_sheet_school') {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        showDragHandle: true,
-                                        isScrollControlled: true,
-                                        //  barrierColor: Colors.transparent,
-                                        shape: const RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.vertical(
-                                              top: Radius.circular(15.0)),
-                                        ),
-                                        builder: (context) =>
-                                            const SchoolBottomSheet(),
-                                      );
-                                    }
-                                  },
-                                  child: Container(
-                                    width:
-                                        MediaQuery.of(context).size.width - 210,
-                                    height: 50,
-                                    margin: const EdgeInsets.only(left: 8),
-                                    child: Card(
-                                      color: Colors.white,
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            width: 8,
-                                          ),
-                                          Icon(
-                                            catList[index]['icon'],
-                                            color: Colors.blue,
-                                            size: 29,
-                                          ),
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            catList[index]['name'],
-                                            style: const TextStyle(
-                                              fontSize: 15,
-                                              color: Colors.black45,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            const Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    left: 10,
-                                  ),
-                                  child: Text(
-                                    "All Products",
-                                    style: TextStyle(
-                                      fontSize: 19,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            BlocBuilder<AllproductBloc, AllproductState>(
-                                builder: (context, state) {
-                              if (state is AllproductLoadingState) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (state is AllproductLoadedState) {
-                                return GridView.builder(
-                                  itemCount:
-                                      state.productData.allproductData.length,
-                                  shrinkWrap: true,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    mainAxisSpacing: 14.0,
-                                    crossAxisSpacing: 10.0,
-                                    mainAxisExtent: 247,
-                                  ),
-                                  itemBuilder: (BuildContext context, index) {
-                                    final productData =
-                                        state.productData.allproductData[index];
-
-                                    // Check if the product has a discount
-                                    final hasDiscount =
-                                        productData.discount != "0";
-
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
+                                shrinkWrap: true,
+                                itemCount: catList.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return InkWell(
+                                    onTap: () async {
+                                      String? openType =
+                                      catList[index]['openType'];
+                                      if (openType == 'products_page') {
+                                        Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ProductDetailScreen(
-                                              productId: state.productData
-                                                  .allproductData[index].id
-                                                  .toString(),
-                                            ),
+                                            const ProductsWidget(),
                                           ),
                                         );
-                                      },
-                                      child: Container(
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        margin: const EdgeInsets.only(
-                                            left: 4.0, right: 4.0),
-                                        decoration: BoxDecoration(
+                                      } else if (openType == 'features_page') {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                            const Features(),
+                                          ),
+                                        );
+                                      } else if (openType ==
+                                          'bottom_sheet_brands') {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          showDragHandle: true,
+                                          isScrollControlled: true,
+                                          //  barrierColor: Colors.transparent,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(15.0)),
+                                          ),
+                                          builder: (context) =>
+                                          const BrandsBottomSheet(),
+                                        );
+                                      } else if (openType ==
+                                          'bottom_sheet_school') {
+                                        showModalBottomSheet(
+                                          context: context,
+                                          showDragHandle: true,
+                                          isScrollControlled: true,
+                                          //  barrierColor: Colors.transparent,
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.vertical(
+                                                top: Radius.circular(15.0)),
+                                          ),
+                                          builder: (context) =>
+                                          const SchoolBottomSheet(),
+                                        );
+                                      }
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width -
+                                          210,
+                                      height: 50,
+                                      margin: const EdgeInsets.only(left: 8),
+                                      child: Card(
+                                        color: Colors.white,
+                                        elevation: 5,
+                                        shape: RoundedRectangleBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          color: Colors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey.shade400,
-                                              spreadRadius: 1,
-                                              blurRadius: 5,
-                                              offset: const Offset(0, 6),
+                                          BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                          children: [
+                                            const SizedBox(
+                                              width: 8,
+                                            ),
+                                            Icon(
+                                              catList[index]['icon'],
+                                              color: Colors.blue,
+                                              size: 29,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              catList[index]['name'],
+                                              style: const TextStyle(
+                                                fontSize: 15,
+                                                color: Colors.black45,
+                                              ),
                                             ),
                                           ],
                                         ),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            ClipRRect(
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                topLeft: Radius.circular(5.0),
-                                                topRight: Radius.circular(5.0),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              const Text(
+                                "All Products",
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              BlocBuilder<AllproductBloc, AllproductState>(
+                                  builder: (context, state) {
+                                    if (state is AllproductLoadingState) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    } else if (state is AllproductLoadedState) {
+                                      return GridView.builder(
+                                        itemCount:
+                                        state.productData.allproductData.length,
+                                        shrinkWrap: true,
+                                        physics:
+                                        const NeverScrollableScrollPhysics(),
+                                        gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2,
+                                          mainAxisSpacing: 14.0,
+                                          crossAxisSpacing: 10.0,
+                                          mainAxisExtent: 247,
+                                        ),
+                                        itemBuilder: (BuildContext context, index) {
+                                          final productData = state
+                                              .productData.allproductData[index];
+
+                                          // Check if the product has a discount
+                                          final hasDiscount =
+                                              productData.discount != "0";
+
+                                          return InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ProductDetailScreen(
+                                                        productId: state.productData
+                                                            .allproductData[index].id
+                                                            .toString(),
+                                                      ),
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                  .size
+                                                  .height,
+                                              margin: const EdgeInsets.only(
+                                                  left: 4.0, right: 4.0),
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                BorderRadius.circular(8.0),
+                                                color: Colors.white,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey.shade400,
+                                                    spreadRadius: 1,
+                                                    blurRadius: 5,
+                                                    offset: const Offset(0, 6),
+                                                  ),
+                                                ],
                                               ),
-                                              child: Image.network(
-                                                state
-                                                    .productData
-                                                    .allproductData[index]
-                                                    .productImage,
-                                                height: 155,
-                                                width: double.infinity,
-                                                fit: BoxFit.fill,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(6.0),
                                               child: Column(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
-                                                  Text(
-                                                    state
-                                                                .productData
-                                                                .allproductData[
-                                                                    index]
-                                                                .productName
-                                                                .length >
-                                                            25
-                                                        ? '${state.productData.allproductData[index].productName.substring(0, 25)}...'
-                                                        : state
-                                                            .productData
-                                                            .allproductData[
-                                                                index]
-                                                            .productName,
-                                                    maxLines: 1,
-                                                    style: const TextStyle(
-                                                      fontSize: 13,
-                                                      color: Colors.black,
+                                                  ClipRRect(
+                                                    borderRadius:
+                                                    const BorderRadius.only(
+                                                      topLeft: Radius.circular(5.0),
+                                                      topRight:
+                                                      Radius.circular(5.0),
+                                                    ),
+                                                    child: Image.network(
+                                                      state
+                                                          .productData
+                                                          .allproductData[index]
+                                                          .productImage,
+                                                      height: 155,
+                                                      width: double.infinity,
+                                                      fit: BoxFit.fill,
                                                     ),
                                                   ),
-                                                  Text(
-                                                    state
-                                                        .productData
-                                                        .allproductData[index]
-                                                        .brandName,
-                                                    style: const TextStyle(
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black45,
-                                                    ),
-                                                  ),
-                                                  if (hasDiscount)
-                                                    RichText(
-                                                      text: TextSpan(
-                                                        text: state
-                                                            .productData
-                                                            .allproductData[
-                                                                index]
-                                                            .discount,
-                                                        style: const TextStyle(
-                                                            fontSize: 15,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            color:
-                                                                Colors.green),
-                                                        children: const <TextSpan>[
-                                                          TextSpan(
-                                                            text: '% Off',
-                                                            style: TextStyle(
-                                                                fontSize: 15,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400,
-                                                                color: Colors
-                                                                    .green),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  const SizedBox(
-                                                    height: 3,
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      const Icon(
-                                                        Icons
-                                                            .currency_rupee_outlined,
-                                                        size: 16,
-                                                        color: Colors.blue,
-                                                      ),
-                                                      Text(
-                                                        hasDiscount
-                                                            ? productData
-                                                                .discountPrice
-                                                            : productData.price,
-                                                        style: TextStyle(
-                                                          fontSize: hasDiscount
-                                                              ? 16
-                                                              : 15,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          color: hasDiscount
-                                                              ? Colors.blue
-                                                              : Colors.blue,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 3,
-                                                      ),
-                                                      if (hasDiscount)
-                                                        const Icon(
-                                                          Icons
-                                                              .currency_rupee_outlined,
-                                                          size: 13,
-                                                          color: Colors.red,
-                                                        ),
-                                                      if (hasDiscount)
+                                                  Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(6.0),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                      children: [
                                                         Text(
                                                           state
                                                               .productData
-                                                              .allproductData[
-                                                                  index]
-                                                              .price,
-                                                          style:
-                                                              const TextStyle(
+                                                              .allproductData[index]
+                                                              .productName,
+                                                          maxLines: 1,
+                                                          style: const TextStyle(
                                                             fontSize: 13,
+                                                            color: Colors.black,
+                                                          ),
+                                                          overflow:
+                                                          TextOverflow.ellipsis,
+                                                        ),
+                                                        Text(
+                                                          state
+                                                              .productData
+                                                              .allproductData[index]
+                                                              .brandName,
+                                                          style: const TextStyle(
+                                                            fontSize: 11,
                                                             fontWeight:
-                                                                FontWeight.w400,
-                                                            color: Colors.red,
-                                                            decoration:
-                                                                TextDecoration
-                                                                    .lineThrough,
+                                                            FontWeight.w500,
+                                                            color: Colors.black45,
                                                           ),
                                                         ),
-                                                      const Spacer(),
-                                                      InkWell(
-                                                        onTap: () {
-                                                          final isAddedCart = state
+                                                        if (hasDiscount)
+                                                          RichText(
+                                                            text: TextSpan(
+                                                              text: state
                                                                   .productData
                                                                   .allproductData[
-                                                                      index]
-                                                                  .isCart ==
-                                                              '1';
-
-                                                          if (isAddedCart) {
-                                                            BlocProvider.of<
-                                                                        CartBloc>(
-                                                                    context)
-                                                                .add(
-                                                                    RemoveCartEvent(
-                                                              productId: state
-                                                                  .productData
-                                                                  .allproductData[
-                                                                      index]
-                                                                  .id
-                                                                  .toString(),
-                                                            ));
-                                                            _showToast(
-                                                                'Cart Item removed');
-                                                          } else {
-                                                            BlocProvider.of<
-                                                                        CartBloc>(
-                                                                    context)
-                                                                .add(
-                                                                    AddToCartEvent(
-                                                              productId: state
-                                                                  .productData
-                                                                  .allproductData[
-                                                                      index]
-                                                                  .id
-                                                                  .toString(),
-                                                              qty: '1',
-                                                            ));
-                                                            _showToast(
-                                                                'Product added Successfully');
-                                                          }
-
-                                                          BlocProvider.of<
-                                                                      HomeCountBloc>(
-                                                                  context)
-                                                              .add(
-                                                                  HomeCountBtnEvent());
-
-                                                          setState(() {
-                                                            if (isAddedCart) {
-                                                              state
-                                                                  .productData
-                                                                  .allproductData[
-                                                                      index]
-                                                                  .isCart = '0';
-                                                            } else {
-                                                              state
-                                                                  .productData
-                                                                  .allproductData[
-                                                                      index]
-                                                                  .isCart = '1';
-                                                            }
-                                                          });
-                                                        },
-                                                        child: Icon(
-                                                          Icons.shopping_cart,
-                                                          color: state
-                                                                      .productData
-                                                                      .allproductData[
-                                                                          index]
-                                                                      .isCart ==
-                                                                  '1'
-                                                              ? Colors.blue
-                                                              : Colors.black45,
-                                                          size: 22,
+                                                              index]
+                                                                  .discount,
+                                                              style:
+                                                              const TextStyle(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                                  color: Colors
+                                                                      .green),
+                                                              children: const <TextSpan>[
+                                                                TextSpan(
+                                                                  text: '% Off',
+                                                                  style: TextStyle(
+                                                                      fontSize: 15,
+                                                                      fontWeight:
+                                                                      FontWeight
+                                                                          .w400,
+                                                                      color: Colors
+                                                                          .green),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        const SizedBox(
+                                                          height: 3,
                                                         ),
-                                                      ),
-                                                    ],
+                                                        Row(
+                                                          children: [
+                                                            const Icon(
+                                                              Icons
+                                                                  .currency_rupee_outlined,
+                                                              size: 16,
+                                                              color: Colors.blue,
+                                                            ),
+                                                            Text(
+                                                              hasDiscount
+                                                                  ? productData
+                                                                  .discountPrice
+                                                                  : productData
+                                                                  .price,
+                                                              style: TextStyle(
+                                                                fontSize:
+                                                                hasDiscount
+                                                                    ? 16
+                                                                    : 15,
+                                                                fontWeight:
+                                                                FontWeight.w400,
+                                                                color: hasDiscount
+                                                                    ? Colors.blue
+                                                                    : Colors.blue,
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              width: 3,
+                                                            ),
+                                                            if (hasDiscount)
+                                                              const Icon(
+                                                                Icons
+                                                                    .currency_rupee_outlined,
+                                                                size: 13,
+                                                                color: Colors.red,
+                                                              ),
+                                                            if (hasDiscount)
+                                                              Text(
+                                                                state
+                                                                    .productData
+                                                                    .allproductData[
+                                                                index]
+                                                                    .price,
+                                                                style:
+                                                                const TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                                  color: Colors.red,
+                                                                  decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                                ),
+                                                              ),
+                                                            const Spacer(),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                final isAddedCart = state
+                                                                    .productData
+                                                                    .allproductData[
+                                                                index]
+                                                                    .isCart ==
+                                                                    '1';
+
+                                                                if (isAddedCart) {
+
+                                                                  BlocProvider.of<
+                                                                      CartBloc>(
+                                                                      context)
+                                                                      .add(
+                                                                      RemoveCartEvent(
+                                                                        productId: state
+                                                                            .productData
+                                                                            .allproductData[
+                                                                        index]
+                                                                            .id
+                                                                            .toString(),
+                                                                      ));
+                                                                  _showToast(
+                                                                      'Cart Item removed');
+                                                                } else {
+
+                                                                  BlocProvider.of<
+                                                                      CartBloc>(
+                                                                      context)
+                                                                      .add(
+                                                                      AddToCartEvent(
+                                                                        productId: state
+                                                                            .productData
+                                                                            .allproductData[
+                                                                        index]
+                                                                            .id
+                                                                            .toString(),
+                                                                        qty: '1',
+                                                                      ));
+                                                                  _showToast(
+                                                                      'Product added Successfully');
+                                                                }
+
+                                                                setState(() {
+                                                                  if (isAddedCart) {
+                                                                    state
+                                                                        .productData
+                                                                        .allproductData[
+                                                                    index]
+                                                                        .isCart = '0';
+                                                                  } else {
+                                                                    state
+                                                                        .productData
+                                                                        .allproductData[
+                                                                    index]
+                                                                        .isCart = '1';
+                                                                  }
+                                                                });
+                                                              },
+                                                              child: Icon(
+                                                                Icons.shopping_cart,
+                                                                color: state
+                                                                    .productData
+                                                                    .allproductData[
+                                                                index]
+                                                                    .isCart ==
+                                                                    '1'
+                                                                    ? Colors.blue
+                                                                    : Colors
+                                                                    .black45,
+                                                                size: 22,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              } else if (state is AllproductErrorState) {
-                                return Center(
-                                  child: Text(state.error),
-                                );
-                              }
-                              return Container();
-                            }),
-                          ],
+                                          );
+                                        },
+                                      );
+                                    } else if (state is AllproductErrorState) {
+                                      return Center(
+                                        child: Text(state.error),
+                                      );
+                                    }
+                                    return Container();
+                                  }),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              }
+                      ],
+                    ),
+                  );
+                }
 
-              return Container();
-            } else {
-              return const Center(child: CircularProgressIndicator());
+                return Container();
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
             }
-          }
-          return Container();
-        },
+            return Container();
+          },
+        ),
       ),
     );
   }
@@ -965,21 +968,21 @@ class ScaleTransition1 extends PageRouteBuilder {
 
   ScaleTransition1(this.page)
       : super(
-          pageBuilder: (context, animation, anotherAnimation) => page,
-          transitionDuration: const Duration(milliseconds: 1000),
-          reverseTransitionDuration: const Duration(milliseconds: 200),
-          transitionsBuilder: (context, animation, anotherAnimation, child) {
-            animation = CurvedAnimation(
-                curve: Curves.fastLinearToSlowEaseIn,
-                parent: animation,
-                reverseCurve: Curves.fastOutSlowIn);
-            return ScaleTransition(
-              alignment: Alignment.bottomCenter,
-              scale: animation,
-              child: child,
-            );
-          },
-        );
+    pageBuilder: (context, animation, anotherAnimation) => page,
+    transitionDuration: const Duration(milliseconds: 1000),
+    reverseTransitionDuration: const Duration(milliseconds: 200),
+    transitionsBuilder: (context, animation, anotherAnimation, child) {
+      animation = CurvedAnimation(
+          curve: Curves.fastLinearToSlowEaseIn,
+          parent: animation,
+          reverseCurve: Curves.fastOutSlowIn);
+      return ScaleTransition(
+        alignment: Alignment.bottomCenter,
+        scale: animation,
+        child: child,
+      );
+    },
+  );
 }
 
 class CombinedBloc {
@@ -990,6 +993,7 @@ class CombinedBloc {
 
   // Define getters for bannerState and secondBannerListState
   BannerState get bannerState => bannerBloc.state;
+
   SecondBannerListState get secondBannerListState => secondBannerListBloc.state;
 
   Stream<CombinedState> get combinedStream {
@@ -997,7 +1001,7 @@ class CombinedBloc {
         CombinedState>(
       bannerBloc.stream,
       secondBannerListBloc.stream,
-      (bannerState, secondBannerListState) {
+          (bannerState, secondBannerListState) {
         return CombinedState(bannerState, secondBannerListState);
       },
     );

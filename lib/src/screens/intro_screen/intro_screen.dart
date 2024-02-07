@@ -53,6 +53,10 @@ class _IntroScreenState extends State<IntroScreen> {
     _pageController.nextPage(duration: _kDuration, curve: _kCurve);
   }
 
+  void previousFunction(){
+    _pageController.previousPage(duration: _kDuration, curve: _kCurve);
+  }
+
   void onChangedFunction(int index) {
     setState(() {
       currentIndex = index;
@@ -98,8 +102,9 @@ class _IntroScreenState extends State<IntroScreen> {
             child: Padding(
               padding: const EdgeInsets.all(2.0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  if (currentIndex < cardData.length - 1)
+                  if (currentIndex < cardData.length - 1) ...[
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).pushAndRemoveUntil(
@@ -119,9 +124,29 @@ class _IntroScreenState extends State<IntroScreen> {
                         ),
                       ),
                     ),
-                  const SizedBox(width: 80),
+                  ] else ...[
+                    IconButton(
+                      onPressed: previousFunction,
+                      icon: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: Colors.blue[700],
+                      ),
+                    ),
+                  ],
+                  if (currentIndex < cardData.length - 1) ...[
+                    const SizedBox(width: 85),
+                  ] else ...[
+                    const SizedBox(width: 101),
+                  ],
+
                   _buildPaginationDots(),
-                  const SizedBox(width: 115),
+
+                  if (currentIndex == cardData.length - 1) ...[
+                    const SizedBox(width: 85),
+                  ]
+                  else ...[
+                    const SizedBox(width: 101),
+                  ],
                   if (currentIndex < cardData.length - 1)
                     IconButton(
                       onPressed: nextFunction,
@@ -130,9 +155,6 @@ class _IntroScreenState extends State<IntroScreen> {
                         color: Colors.blue[700],
                       ),
                     ),
-                  const SizedBox(
-                    width: 35,
-                  ),
                   if (currentIndex == cardData.length - 1)
                     TextButton(
                       onPressed: () {

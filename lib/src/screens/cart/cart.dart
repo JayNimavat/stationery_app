@@ -229,7 +229,8 @@ class _CartListScreenState extends State<CartListScreen> {
                                                       .length >
                                                   25
                                               ? '${state.cartListData.cartListModelData.cartDetail[index].productData.productName.substring(0, 25)}...'
-                                              : state
+                                              :
+                                          state
                                                   .cartListData
                                                   .cartListModelData
                                                   .cartDetail[index]
@@ -604,6 +605,9 @@ class _CartListScreenState extends State<CartListScreen> {
                                       onTap: () {
                                         String enteredCouponCode =
                                             couponController.text;
+                                        isCouponApplied
+                                            ? couponController.clear()
+                                            : enteredCouponCode;
                                         BlocProvider.of<ApplyCouponBloc>(
                                                 context)
                                             .add(ApplyCouponBtnEvent(
@@ -827,16 +831,6 @@ class _CartListScreenState extends State<CartListScreen> {
                   ),
                 ),
               );
-            } else {
-              return const Center(
-                child: Text(
-                  'Please Add Products to Cart',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              );
             }
           } else if (state is CartListErrorState) {
             return Center(
@@ -863,67 +857,79 @@ class _CartListScreenState extends State<CartListScreen> {
                     orderTotal;
             num finalTotal = orderTotal -
                 state.cartListData.cartListModelData.cartSummary.discountTotal;
-            return Row(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 16,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  color: Colors.white,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => const ProductsWidget(),
-                        ),
-                      );
-                    },
-                    child: const Center(
-                      child: Text('Add More'),
+            if (state.cartListData.cartListModelData.cartDetail.isNotEmpty) {
+              return Row(
+                children: [
+                  Container(
+                    height: MediaQuery.of(context).size.height / 16,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    color: Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const ProductsWidget(),
+                          ),
+                        );
+                      },
+                      child: const Center(
+                        child: Text('Add More'),
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height / 16,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  color: Colors.blue,
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => CheckoutScreen(
-                            totalAmount: isCouponApplied
-                                ? finalTotal.round().toString()
-                                : state.cartListData.cartListModelData
-                                    .cartSummary.orderTotal
-                                    .toString(),
-                            subTotal: state.cartListData.cartListModelData
-                                .cartSummary.subTotal
-                                .toString(),
-                            discountTotal: state.cartListData.cartListModelData
-                                .cartSummary.discountTotal
-                                .toString(),
-                            couponDiscount: isCouponApplied
-                                ? couponDiscount.round().toString()
-                                : state.cartListData.cartListModelData
-                                    .cartSummary.couponDiscount
-                                    .toString(),
+                  Container(
+                    height: MediaQuery.of(context).size.height / 16,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    color: Colors.blue,
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CheckoutScreen(
+                              totalAmount: isCouponApplied
+                                  ? finalTotal.round().toString()
+                                  : state.cartListData.cartListModelData
+                                      .cartSummary.orderTotal
+                                      .toString(),
+                              subTotal: state.cartListData.cartListModelData
+                                  .cartSummary.subTotal
+                                  .toString(),
+                              discountTotal: state.cartListData
+                                  .cartListModelData.cartSummary.discountTotal
+                                  .toString(),
+                              couponDiscount: isCouponApplied
+                                  ? couponDiscount.round().toString()
+                                  : state.cartListData.cartListModelData
+                                      .cartSummary.couponDiscount
+                                      .toString(),
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: const Center(
-                      child: Text(
-                        'Checkout',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
+                        );
+                      },
+                      child: const Center(
+                        child: Text(
+                          'Checkout',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
                   ),
+                ],
+              );
+            } else {
+              return const Center(
+                child: Text(
+                  'Please Add Products to Cart',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ],
-            );
+              );
+            }
           } else if (state is CartListErrorState) {
             return Center(
               child: Text(state.error),

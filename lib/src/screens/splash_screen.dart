@@ -68,39 +68,33 @@ class _SplashScreenState extends State<SplashScreen>
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: AnimatedOpacity(
-              curve: Curves.easeInCirc,
-              duration: const Duration(milliseconds: 1700),
-              opacity: _opacity,
-              child: AnimatedContainer(
-                curve: Curves.easeInCirc,
-                duration: const Duration(milliseconds: 1700),
-                height: width / _containerSize,
-                width: width / _containerSize,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/img/ganesh.png',
-                        height: 150,
-                        width: 170,
-                      ),
-                      const Text(
-                        'Shree Ganesh Stationary',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
+      body: Center(
+        child: AnimatedOpacity(
+          curve: Curves.easeInCirc,
+          duration: const Duration(milliseconds: 1700),
+          opacity: _opacity,
+          child: AnimatedContainer(
+            curve: Curves.easeInCirc,
+            duration: const Duration(milliseconds: 1700),
+            height: width / _containerSize,
+            width: width / _containerSize,
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/img/ganesh.png',
+                  height: MediaQuery.of(context).size.height * 0.2,
+                  width: MediaQuery.of(context).size.width,
+                ),
+                const Text(
+                  'Shree Ganesh Stationary',
+                  style: TextStyle(
+                    fontSize: 18,
                   ),
                 ),
-              ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

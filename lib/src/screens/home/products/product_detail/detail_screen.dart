@@ -234,7 +234,7 @@ class _DetailScreenState extends State<DetailScreen> {
               child: Column(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(0),
+                    padding: const EdgeInsets.all(5),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -827,7 +827,7 @@ class _DetailScreenState extends State<DetailScreen> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const ProductsScreen(),
+                              builder: (context) => const ProductsWidget(),
                             ),
                           );
                         },
@@ -858,6 +858,7 @@ class _DetailScreenState extends State<DetailScreen> {
                       ),
                       color: Colors.white70,
                     ),
+                    margin: EdgeInsets.only(bottom: 8),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
@@ -938,20 +939,12 @@ class _DetailScreenState extends State<DetailScreen> {
                                           children: [
                                             Text(
                                               state
-                                                          .productDetailData
-                                                          .productDetailModelData
-                                                          .topSellingProductList[
-                                                              index]
-                                                          .productName
-                                                          .length >
-                                                      25
-                                                  ? '${state.productDetailData.productDetailModelData.topSellingProductList[index].productName.substring(0, 25)}...'
-                                                  : state
                                                       .productDetailData
                                                       .productDetailModelData
                                                       .topSellingProductList[
                                                           index]
                                                       .productName,
+                                              overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               style: const TextStyle(
                                                 fontSize: 13,

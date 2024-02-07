@@ -111,6 +111,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                 .productName,
                             id: state.wishListData.wishListModelData[index].id
                                 .toString(),
+                            onItemRemoved: (bool removed) {
+                              if (removed) {
+                                BlocProvider.of<WishListBloc>(context).add(WishListDataEvent());
+                              }
+                            },
                           );
                         },
                       );
@@ -301,8 +306,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             Align(
                               alignment: Alignment.topRight,
                               child: InkWell(
-                                onTap: () {
-                                  showModalBottomSheet(
+                                onTap: () async {
+                                  return await showModalBottomSheet(
                                     context: context,
                                     //  barrierColor: Colors.transparent,
                                     builder: (context2) {
@@ -323,6 +328,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                         id: state.wishListData
                                             .wishListModelData[index].id
                                             .toString(),
+                                        onItemRemoved: (bool removed) {
+                                          if (removed) {
+                                            BlocProvider.of<WishListBloc>(context).add(WishListDataEvent());
+                                          }
+                                        },
                                       );
                                     },
                                   );

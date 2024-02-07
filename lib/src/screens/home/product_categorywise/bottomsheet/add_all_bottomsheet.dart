@@ -96,7 +96,7 @@ class _AddAllBottomSheetState extends State<AddAllBottomSheet> {
                   children: [
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pop(true);
+                        Navigator.of(context).pop(false);
                       },
                       child: const SizedBox(
                         height: 50,

@@ -318,16 +318,10 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
                                     children: [
                                       Text(
                                         state
-                                                    .featuresData
-                                                    .featuresmodelData[index]
-                                                    .productName
-                                                    .length >
-                                                25
-                                            ? '${state.featuresData.featuresmodelData[index].productName.substring(0, 25)}...'
-                                            : state
                                                 .featuresData
                                                 .featuresmodelData[index]
                                                 .productName,
+                                        overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(
                                           fontSize: 13,

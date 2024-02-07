@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/address/address.dart';
 import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/delete_account/bloc_delete_account.dart';
+import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/delete_account/event_delete_account.dart';
 import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/edit_profile/bloc/user_profile/bloc_user_profile.dart';
 import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/edit_profile/bloc/user_profile/event_user_profile.dart';
 import 'package:task_1/src/screens/bottom_navigation_bar.dart/profile/edit_profile/bloc/user_profile/state_user_profile.dart';
@@ -15,6 +16,7 @@ import 'package:task_1/src/screens/home/bloc/home_count/state_home_count.dart';
 
 class ProfileScreen extends StatefulWidget {
   final VoidCallback onTap;
+
   const ProfileScreen({
     super.key,
     required this.onTap,
@@ -48,6 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 class Profile extends StatefulWidget {
   final VoidCallback onTap;
+
   const Profile({required this.onTap, super.key});
 
   @override
@@ -208,8 +211,8 @@ class _ProfileState extends State<Profile> {
                                 );
                               },
                               child: Container(
-                                width: MediaQuery.of(context).size.width - 276,
-                                height: 65,
+                                width: MediaQuery.of(context).size.width * 0.30,
+                                height: 64,
                                 margin: const EdgeInsets.all(5),
                                 child: Card(
                                   color: Colors.white,
@@ -246,8 +249,8 @@ class _ProfileState extends State<Profile> {
                                     builder: (context) => const Favorites()));
                               },
                               child: Container(
-                                width: MediaQuery.of(context).size.width - 265,
-                                height: 65,
+                                width: MediaQuery.of(context).size.width * 0.30,
+                                height: 64,
                                 margin: const EdgeInsets.all(5),
                                 child: Card(
                                   color: Colors.white,
@@ -285,8 +288,8 @@ class _ProfileState extends State<Profile> {
                                 });
                               },
                               child: Container(
-                                width: MediaQuery.of(context).size.width - 276,
-                                height: 65,
+                                width: MediaQuery.of(context).size.width * 0.30,
+                                height: 64,
                                 margin: const EdgeInsets.all(5),
                                 child: Card(
                                   color: Colors.white,
@@ -556,34 +559,27 @@ class _ProfileState extends State<Profile> {
                                     ),
                                   ),
                                   actions: <Widget>[
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                          ),
-                                          onPressed: () {
-                                            // BlocProvider.of<DeleteAccountBloc>(
-                                            //         context)
-                                            //     .add(DeleteAccountBtnEvent());
-                                          },
-                                          child: const Text(
-                                            'Yes',
-                                            style:
-                                                TextStyle(color: Colors.black),
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          child: const Text('No'),
-                                        ),
-                                      ],
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                      ),
+                                      onPressed: () {
+                                        // BlocProvider.of<DeleteAccountBloc>(
+                                        //         context)
+                                        //     .add(DeleteAccountBtnEvent());
+                                      },
+                                      child: const Text(
+                                        'Yes',
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('No'),
                                     ),
                                   ],
                                 );

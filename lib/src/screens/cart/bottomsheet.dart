@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:task_1/src/screens/cart/bloc/cart/cart_bloc.dart';
 import 'package:task_1/src/screens/cart/bloc/cart/cart_event.dart';
+import 'package:task_1/src/screens/cart/bloc/cart_list/bloc_cart_list.dart';
+import 'package:task_1/src/screens/cart/bloc/cart_list/event_cart_list.dart';
 import 'package:task_1/src/screens/favorites/bloc/save_wish/bloc_save_wish.dart';
 import 'package:task_1/src/screens/favorites/bloc/save_wish/event_save_wish.dart';
 
@@ -10,6 +12,7 @@ class CartBottomSheet extends StatefulWidget {
   final String productId;
   final String productImage;
   final String productName;
+
   const CartBottomSheet({
     super.key,
     required this.productId,
@@ -32,6 +35,9 @@ class _CartBottomSheetState extends State<CartBottomSheet> {
         BlocProvider<WishBloc>(
           create: (BuildContext context) => WishBloc(),
         ),
+        // BlocProvider<CartListBloc>(
+        //   create: (context) => CartListBloc(),
+        // ),
       ],
       child: CartListBottomSheet(
         productId: widget.productId,
@@ -46,6 +52,7 @@ class CartListBottomSheet extends StatefulWidget {
   final String productId;
   final String productImage;
   final String productName;
+
   const CartListBottomSheet({
     super.key,
     required this.productId,
@@ -61,7 +68,7 @@ class _CartListBottomSheetState extends State<CartListBottomSheet> {
   @override
   void initState() {
     super.initState();
-    //  BlocProvider.of<CartListBloc>(context).add(CartListDataEvent());
+    // BlocProvider.of<CartListBloc>(context).add(CartListDataEvent());
   }
 
   @override
@@ -193,7 +200,6 @@ void _showToast(String message) {
   );
 }
 
-
 // BlocBuilder<WishListBloc, WishListState>(
 //       builder: (context, state) {
 //         if (state is WishListLoadingState) {
@@ -201,7 +207,7 @@ void _showToast(String message) {
 //             child: CircularProgressIndicator(),
 //           );
 //         } else if (state is WishListLoadedState) {
-//           return 
+//           return
 //         } else if (state is WishListErrorState) {
 //           return Center(
 //             child: Text(state.error),

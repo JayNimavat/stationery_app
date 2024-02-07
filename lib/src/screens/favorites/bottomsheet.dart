@@ -11,6 +11,7 @@ class RemoveWishBottomSheet extends StatefulWidget {
   final String productImage;
   final String productName;
   final String id;
+  final Function(bool) onItemRemoved;
 
   const RemoveWishBottomSheet({
     super.key,
@@ -18,6 +19,7 @@ class RemoveWishBottomSheet extends StatefulWidget {
     required this.productImage,
     required this.productName,
     required this.id,
+    required this.onItemRemoved,
   });
 
   @override
@@ -41,6 +43,7 @@ class _RemoveWishBottomSheetState extends State<RemoveWishBottomSheet> {
         productImage: widget.productImage,
         productName: widget.productName,
         id: widget.id,
+        onItemRemoved: widget.onItemRemoved,
       ),
     );
   }
@@ -51,6 +54,7 @@ class WishListBottomSheet extends StatefulWidget {
   final String productImage;
   final String productName;
   final String id;
+  final Function(bool) onItemRemoved;
 
   const WishListBottomSheet({
     super.key,
@@ -58,6 +62,7 @@ class WishListBottomSheet extends StatefulWidget {
     required this.productImage,
     required this.productName,
     required this.id,
+    required this.onItemRemoved,
   });
 
   @override
@@ -66,6 +71,7 @@ class WishListBottomSheet extends StatefulWidget {
 
 class _WishListBottomSheetState extends State<WishListBottomSheet> {
   _WishListBottomSheetState();
+
   @override
   void initState() {
     super.initState();
@@ -163,6 +169,7 @@ class _WishListBottomSheetState extends State<WishListBottomSheet> {
                               .add(RemoveWishEvent(
                             wishlistId: widget.id,
                           ));
+                          widget.onItemRemoved(true);
                           Navigator.of(context).pop(true);
                         },
                         child: const SizedBox(

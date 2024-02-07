@@ -16,7 +16,7 @@ import 'package:task_1/src/screens/home/bloc/product_detail/bloc_product_detail.
 import 'package:task_1/src/screens/home/products/product_detail/detail_screen.dart';
 
 class ProductsWidget extends StatefulWidget {
-  const ProductsWidget({super.key});
+  const ProductsWidget({Key? key}) : super(key: key);
 
   @override
   State<ProductsWidget> createState() => _ProductsWidgetState();
@@ -43,94 +43,22 @@ class _ProductsWidgetState extends State<ProductsWidget> {
 }
 
 class ProductsScreen extends StatefulWidget {
-  const ProductsScreen({super.key});
+  const ProductsScreen({Key? key}) : super(key: key);
 
   @override
   State<ProductsScreen> createState() => _ProductsScreenState();
 }
 
 class _ProductsScreenState extends State<ProductsScreen> {
-  final List<Map<String, dynamic>> pdcList = [
-    {
-      'image': 'assets/img/products/gujarati.jpg',
-      'name': 'Gujarati',
-      'type': 'Text Book',
-      'price': '\u{20B9}${120}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 Gujarati Text Book',
-    },
-    {
-      'image': 'assets/img/products/sanskrit.jpg',
-      'name': 'Sanskrit',
-      'type': 'Text Book',
-      'price': '\u{20B9}${100}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 Sanskrit Text Book',
-    },
-    {
-      'image': 'assets/img/products/hindi.jpg',
-      'name': 'Hindi',
-      'type': 'Text Book',
-      'price': '\u{20B9}${110}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 Hindi Text Book',
-    },
-    {
-      'image': 'assets/img/products/social_science.jpg',
-      'name': 'Social Science',
-      'type': 'Text Book',
-      'price': '\u{20B9}${90}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 Social Science Text Book',
-    },
-    {
-      'image': 'assets/img/products/english.jpeg',
-      'name': 'English',
-      'type': 'Text Book',
-      'price': '\u{20B9}${100}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 English Text Book',
-    },
-    {
-      'image': 'assets/img/products/science.jpeg',
-      'name': 'Science',
-      'type': 'Text Book',
-      'price': '\u{20B9}${120}',
-      'icon': Icons.shopping_cart,
-      'school': 'JNV Bhavnagar',
-      'board': 'CBSE',
-      'medium': 'English',
-      'standard': '10',
-      'book_name': 'Standard - 10 Science Text Book',
-    },
-  ];
+  int currentPage = 1;
+  final int pageSize = 10;
 
   @override
   void initState() {
     super.initState();
     BlocProvider.of<HomeCountBloc>(context).add(HomeCountBtnEvent());
-    BlocProvider.of<AllproductBloc>(context)
-        .add(AllproductdataEvent(filterPrice: '', filterSortBy: ''));
+    BlocProvider.of<AllproductBloc>(context).add(AllproductdataEvent(
+      filterPrice: '', filterSortBy: ''));
   }
 
   @override
@@ -168,7 +96,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   builder: (context, state) {
                     if (state is HomeCountLoadedState) {
                       if (state.homeCountData.homeCountModelData.favoriteCount
-                              .toString() ==
+                          .toString() ==
                           '0') {
                         return Container();
                       } else {
@@ -211,7 +139,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                   builder: (context, state) {
                     if (state is HomeCountLoadedState) {
                       if (state.homeCountData.homeCountModelData.cartCount
-                              .toString() ==
+                          .toString() ==
                           '0') {
                         return Container();
                       } else {
@@ -239,305 +167,303 @@ class _ProductsScreenState extends State<ProductsScreen> {
       ),
       body: BlocBuilder<AllproductBloc, AllproductState>(
           builder: (context, state) {
-        if (state is AllproductLoadingState) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state is AllproductLoadedState) {
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
+            if (state is AllproductLoadingState) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (state is AllproductLoadedState) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
                   children: [
-                    InkWell(
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const FilterDialogBox();
-                          },
-                        ).then((value) {
-                          if (value != null) {
-                            BlocProvider.of<AllproductBloc>(context).add(
-                              AllproductdataEvent(
-                                filterPrice: value[0],
-                                filterSortBy: value[1],
-                              ),
-                            );
-                          }
-                        });
-                      },
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: 30,
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/img/filter.png',
-                              color: Colors.blue,
-                              height: 25,
-                              width: 23,
-                            ),
-                            const Text(
-                              'Filter',
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 21,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 3,
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: GridView.builder(
-                      itemCount: state.productData.allproductData.length,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 14.0,
-                        crossAxisSpacing: 10.0,
-                        mainAxisExtent: 247,
-                      ),
-                      itemBuilder: (BuildContext context, index) {
-                        final productData =
-                            state.productData.allproductData[index];
-
-                        // Check if the product has a discount
-                        final hasDiscount = productData.discount != "0";
-
-                        return InkWell(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProductDetailScreen(
-                                  productId: state
-                                      .productData.allproductData[index].id
-                                      .toString(),
-                                ),
-                              ),
-                            );
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return const FilterDialogBox();
+                              },
+                            ).then((value) {
+                              if (value != null) {
+                                BlocProvider.of<AllproductBloc>(context).add(
+                                  AllproductdataEvent(
+                                    filterPrice: value[0],
+                                    filterSortBy: value[1],
+                                  ),
+                                );
+                              }
+                            });
                           },
-                          child: Container(
-                            height: MediaQuery.of(context).size.height,
-                            margin:
-                                const EdgeInsets.only(left: 4.0, right: 4.0),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8.0),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.shade400,
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.2,
+                            height: 30,
+                            child: Row(
                               children: [
-                                ClipRRect(
-                                  borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(5.0),
-                                    topRight: Radius.circular(5.0),
-                                  ),
-                                  child: Image.network(
-                                    state.productData.allproductData[index]
-                                        .productImage,
-                                    height: 155,
-                                    width: double.infinity,
-                                    fit: BoxFit.fill,
-                                  ),
+                                Image.asset(
+                                  'assets/img/filter.png',
+                                  color: Colors.blue,
+                                  height: 25,
+                                  width: 23,
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(6.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        state.productData.allproductData[index]
-                                                    .productName.length >
-                                                25
-                                            ? '${state.productData.allproductData[index].productName.substring(0, 25)}...'
-                                            : state
-                                                .productData
-                                                .allproductData[index]
-                                                .productName,
-                                        maxLines: 1,
-                                        style: const TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      Text(
-                                        state.productData.allproductData[index]
-                                            .brandName,
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black45,
-                                        ),
-                                      ),
-                                      if (hasDiscount)
-                                        RichText(
-                                          text: TextSpan(
-                                            text: state.productData
-                                                .allproductData[index].discount,
-                                            style: const TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.green),
-                                            children: const <TextSpan>[
-                                              TextSpan(
-                                                text: '% Off',
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: Colors.green),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      if (hasDiscount)
-                                        const SizedBox(
-                                          height: 3,
-                                        ),
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.currency_rupee_outlined,
-                                            size: 16,
-                                            color: Colors.blue,
-                                          ),
-                                          Text(
-                                            hasDiscount
-                                                ? productData.discountPrice
-                                                : productData.price,
-                                            style: TextStyle(
-                                              fontSize: hasDiscount ? 16 : 15,
-                                              fontWeight: FontWeight.w400,
-                                              color: hasDiscount
-                                                  ? Colors.blue
-                                                  : Colors.blue,
-                                            ),
-                                          ),
-                                          if (hasDiscount)
-                                            const SizedBox(
-                                              width: 3,
-                                            ),
-                                          if (hasDiscount)
-                                            const Icon(
-                                              Icons.currency_rupee_outlined,
-                                              size: 13,
-                                              color: Colors.red,
-                                            ),
-                                          if (hasDiscount)
-                                            Text(
-                                              state.productData
-                                                  .allproductData[index].price,
-                                              style: const TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.red,
-                                                decoration:
-                                                    TextDecoration.lineThrough,
-                                              ),
-                                            ),
-                                          const Spacer(),
-                                          InkWell(
-                                            onTap: () {
-                                              final isAddedCart = state
-                                                      .productData
-                                                      .allproductData[index]
-                                                      .isCart ==
-                                                  '1';
-
-                                              if (isAddedCart) {
-                                                BlocProvider.of<CartBloc>(
-                                                        context)
-                                                    .add(RemoveCartEvent(
-                                                  productId: state.productData
-                                                      .allproductData[index].id
-                                                      .toString(),
-                                                ));
-                                                _showToast('Cart Item removed');
-                                              } else {
-                                                BlocProvider.of<CartBloc>(
-                                                        context)
-                                                    .add(AddToCartEvent(
-                                                  productId: state.productData
-                                                      .allproductData[index].id
-                                                      .toString(),
-                                                  qty: '1',
-                                                ));
-                                                _showToast(
-                                                    'Product added Successfully');
-                                              }
-                                              setState(() {
-                                                if (isAddedCart) {
-                                                  state
-                                                      .productData
-                                                      .allproductData[index]
-                                                      .isCart = '0';
-                                                } else {
-                                                  state
-                                                      .productData
-                                                      .allproductData[index]
-                                                      .isCart = '1';
-                                                }
-                                              });
-                                              BlocProvider.of<HomeCountBloc>(
-                                                      context)
-                                                  .add(HomeCountBtnEvent());
-                                            },
-                                            child: Icon(
-                                              Icons.shopping_cart,
-                                              color: state
-                                                          .productData
-                                                          .allproductData[index]
-                                                          .isCart ==
-                                                      '1'
-                                                  ? Colors.blue
-                                                  : Colors.black45,
-                                              size: 22,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                const Text(
+                                  'Filter',
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 21,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ),
+                    const SizedBox(
+                      height: 3,
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: GridView.builder(
+                          itemCount: state.productData.allproductData.length,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 14.0,
+                            crossAxisSpacing: 10.0,
+                            mainAxisExtent: 247,
+                          ),
+                          itemBuilder: (BuildContext context, index)  {
+                            final productData =
+                            state.productData.allproductData[index];
+
+                            // Check if the product has a discount
+                            final hasDiscount = productData.discount != "0";
+
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ProductDetailScreen(
+                                      productId: state
+                                          .productData.allproductData[index].id
+                                          .toString(),
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: MediaQuery.of(context).size.height,
+                                margin: const EdgeInsets.only(
+                                  left: 4.0,
+                                  right: 4.0,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade400,
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 6),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                        topLeft: Radius.circular(5.0),
+                                        topRight: Radius.circular(5.0),
+                                      ),
+                                      child: Image.network(
+                                        state.productData.allproductData[index]
+                                            .productImage,
+                                        height: 155,
+                                        width: double.infinity,
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            state.productData.allproductData[index]
+                                                .productName,
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                              fontSize: 13,
+                                              color: Colors.black,
+                                            ),
+                                          ),
+                                          Text(
+                                            state.productData.allproductData[index]
+                                                .brandName,
+                                            style: const TextStyle(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.black45,
+                                            ),
+                                          ),
+                                          if (hasDiscount)
+                                            RichText(
+                                              text: TextSpan(
+                                                text: state.productData
+                                                    .allproductData[index].discount,
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.green),
+                                                children: const <TextSpan>[
+                                                  TextSpan(
+                                                    text: '% Off',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w400,
+                                                        color: Colors.green),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          if (hasDiscount)
+                                            const SizedBox(
+                                              height: 3,
+                                            ),
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.currency_rupee_outlined,
+                                                size: 16,
+                                                color: Colors.blue,
+                                              ),
+                                              Text(
+                                                hasDiscount
+                                                    ? productData.discountPrice
+                                                    : productData.price,
+                                                style: TextStyle(
+                                                  fontSize: hasDiscount ? 16 : 15,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: hasDiscount
+                                                      ? Colors.blue
+                                                      : Colors.blue,
+                                                ),
+                                              ),
+                                              if (hasDiscount)
+                                                const SizedBox(
+                                                  width: 3,
+                                                ),
+                                              if (hasDiscount)
+                                                const Icon(
+                                                  Icons.currency_rupee_outlined,
+                                                  size: 13,
+                                                  color: Colors.red,
+                                                ),
+                                              if (hasDiscount)
+                                                Text(
+                                                  state.productData
+                                                      .allproductData[index].price,
+                                                  style: const TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.red,
+                                                    decoration:
+                                                    TextDecoration.lineThrough,
+                                                  ),
+                                                ),
+                                              const Spacer(),
+                                              InkWell(
+                                                onTap: () {
+                                                  final isAddedCart = state
+                                                      .productData
+                                                      .allproductData[index]
+                                                      .isCart ==
+                                                      '1';
+
+                                                  if (isAddedCart) {
+                                                    BlocProvider.of<CartBloc>(
+                                                        context)
+                                                        .add(RemoveCartEvent(
+                                                      productId: state.productData
+                                                          .allproductData[index].id
+                                                          .toString(),
+                                                    ));
+                                                    _showToast('Cart Item removed');
+                                                  } else {
+                                                    BlocProvider.of<CartBloc>(
+                                                        context)
+                                                        .add(AddToCartEvent(
+                                                      productId: state.productData
+                                                          .allproductData[index].id
+                                                          .toString(),
+                                                      qty: '1',
+                                                    ));
+                                                    _showToast(
+                                                        'Product added Successfully');
+                                                  }
+                                                  setState(() {
+                                                    if (isAddedCart) {
+                                                      state
+                                                          .productData
+                                                          .allproductData[index]
+                                                          .isCart = '0';
+                                                    } else {
+                                                      state
+                                                          .productData
+                                                          .allproductData[index]
+                                                          .isCart = '1';
+                                                    }
+                                                  });
+                                                  BlocProvider.of<HomeCountBloc>(
+                                                      context)
+                                                      .add(HomeCountBtnEvent());
+                                                },
+                                                child: Icon(
+                                                  Icons.shopping_cart,
+                                                  color: state
+                                                      .productData
+                                                      .allproductData[index]
+                                                      .isCart ==
+                                                      '1'
+                                                      ? Colors.blue
+                                                      : Colors.black45,
+                                                  size: 22,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
+                  ],
                 ),
-              ],
-            ),
-          );
-        } else if (state is AllproductErrorState) {
-          return Center(
-            child: Text(state.error),
-          );
-        }
-        return Container();
-      }),
+              );
+            } else if (state is AllproductErrorState) {
+              return Center(
+                child: Text(state.error),
+              );
+            }
+            return Container();
+          }),
     );
   }
 }
@@ -712,7 +638,9 @@ class _FilterDialogBoxState extends State<FilterDialogBox> {
                       color: Colors.blue,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   child: const Text(
                     'Clear All',
                     style: TextStyle(

@@ -297,18 +297,11 @@ class _CatwiseProductState extends State<CatwiseProduct> {
                                         children: [
                                           Text(
                                             state
-                                                        .catwiseProductData
-                                                        .catwiseProductModelData[
-                                                            index]
-                                                        .productName
-                                                        .length >
-                                                    25
-                                                ? '${state.catwiseProductData.catwiseProductModelData[index].productName.substring(0, 25)}...'
-                                                : state
                                                     .catwiseProductData
                                                     .catwiseProductModelData[
                                                         index]
                                                     .productName,
+                                            overflow: TextOverflow.ellipsis,
                                             maxLines: 1,
                                             style: const TextStyle(
                                               fontSize: 13,

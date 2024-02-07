@@ -122,7 +122,7 @@ class _CheckoutState extends State<Checkout> {
                       groupValue: address,
                       onChanged: (value) {
                         setState(() {
-                          address = value.toString();
+                          address = value;
                         });
                       },
                     ),
@@ -306,7 +306,7 @@ class _CheckoutState extends State<Checkout> {
                       groupValue: payment,
                       onChanged: (value) {
                         setState(() {
-                          payment = value.toString();
+                          payment = value;
                         });
                       },
                     ),

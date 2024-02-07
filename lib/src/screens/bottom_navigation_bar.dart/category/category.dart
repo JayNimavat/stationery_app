@@ -196,7 +196,6 @@ class _CategoryState extends State<Category> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            //  crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(
                 height: 10,
@@ -242,7 +241,6 @@ class _CategoryState extends State<Category> {
                                     .schoolCategoryModelData[index].id;
                                 _isTappedSchool = !_isTappedSchool;
                               });
-                              print('SCHOOL ID:$_selectedSchoolId');
                             },
                             child: Container(
                               height: 240,
@@ -342,7 +340,6 @@ class _CategoryState extends State<Category> {
                                               .id;
                                           _isTappedBoard = !_isTappedBoard;
                                         });
-                                        print('BOARD ID:$_selectedBoardId');
                                       },
                                       child: Container(
                                         height: 240,
@@ -437,7 +434,6 @@ class _CategoryState extends State<Category> {
                                   itemCount: state.mediumCategoryData
                                       .mediumCategoryModelData.length,
                                   shrinkWrap: true,
-                                  //  physics: const NeverScrollableScrollPhysics(),
                                   scrollDirection: Axis.horizontal,
                                   itemBuilder: (context, index) {
                                     return InkWell(
@@ -450,7 +446,6 @@ class _CategoryState extends State<Category> {
                                           _tappedIndex = index;
                                           _isTappedMedium = !_isTappedMedium;
                                         });
-                                        print('MEDIUM ID:$_selectedMediumId');
                                       },
                                       child: Container(
                                         height: 50,
@@ -549,8 +544,6 @@ class _CategoryState extends State<Category> {
                                           _isTappedStandard =
                                               !_isTappedStandard;
                                         });
-                                        print(
-                                            'STANDARD ID:$_selectedStandardId');
                                       },
                                       child: Container(
                                         height: 55,

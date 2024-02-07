@@ -319,14 +319,11 @@ class _FlashDealState extends State<FlashDeal> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        state.flashData.flashdealData[index]
-                                                    .productName.length >
-                                                25
-                                            ? '${state.flashData.flashdealData[index].productName.substring(0, 25)}...'
-                                            : state
+                                        state
                                                 .flashData
                                                 .flashdealData[index]
                                                 .productName,
+                                        overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(
                                           fontSize: 13,

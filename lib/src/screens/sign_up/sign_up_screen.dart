@@ -63,289 +63,286 @@ class _SignUpScreenState extends State<SignUpScreen> {
             return const SignUpScreen();
           }
           return SingleChildScrollView(
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Form(
-                  key: formGlobalKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 100,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Form(
+                key: formGlobalKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 100,
+                    ),
+                    const Text(
+                      'CREATE  AN  ACCOUNT',
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 53, 86, 217),
+                        fontSize: 21,
+                        fontWeight: FontWeight.w500,
                       ),
-                      const Text(
-                        'CREATE  AN  ACCOUNT',
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 53, 86, 217),
-                          fontSize: 21,
-                          fontWeight: FontWeight.w500,
+                    ),
+                    const SizedBox(
+                      height: 70,
+                    ),
+                    TextFormField(
+                      controller: _name,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(10),
+                        labelText: 'Name',
+                        prefixIcon: const Icon(
+                          Icons.person,
+                          size: 25,
+                        ),
+                        prefixIconColor: MaterialStateColor.resolveWith(
+                            (states) => states.contains(MaterialState.focused)
+                                ? const Color.fromARGB(255, 53, 86, 217)
+                                : Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black45),
+                            borderRadius: BorderRadius.circular(25)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 53, 86, 217)),
+                        ),
+                        labelStyle: const TextStyle(color: Colors.black45),
+                        hintText: 'Enter name here',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      TextFormField(
-                        controller: _name,
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          labelText: 'Name',
-                          prefixIcon: const Icon(
-                            Icons.person,
-                            size: 25,
-                          ),
-                          prefixIconColor: MaterialStateColor.resolveWith(
-                              (states) => states.contains(MaterialState.focused)
-                                  ? const Color.fromARGB(255, 53, 86, 217)
-                                  : Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.black45),
-                              borderRadius: BorderRadius.circular(25)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 53, 86, 217)),
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black45),
-                          hintText: 'Enter name here',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
+                      obscureText: false,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextFormField(
+                      controller: _phone,
+                      autofocus: false,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(10),
+                        labelText: 'Phone Number',
+                        prefixIcon: const Icon(
+                          Icons.phone,
+                          size: 25,
                         ),
-                        obscureText: false,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      TextFormField(
-                        controller: _phone,
-                        autofocus: false,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          labelText: 'Phone Number',
-                          prefixIcon: const Icon(
-                            Icons.phone,
-                            size: 25,
-                          ),
-                          prefixIconColor: MaterialStateColor.resolveWith(
-                              (states) => states.contains(MaterialState.focused)
-                                  ? const Color.fromARGB(255, 53, 86, 217)
-                                  : Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.black45),
-                              borderRadius: BorderRadius.circular(25)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 53, 86, 217)),
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black45),
-                          hintText: 'Enter Phone Number here',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
+                        prefixIconColor: MaterialStateColor.resolveWith(
+                            (states) => states.contains(MaterialState.focused)
+                                ? const Color.fromARGB(255, 53, 86, 217)
+                                : Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black45),
+                            borderRadius: BorderRadius.circular(25)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 53, 86, 217)),
                         ),
-                        obscureText: false,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      TextFormField(
-                        controller: _email,
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          labelText: 'Email',
-                          prefixIcon: const Icon(
-                            Icons.email_outlined,
-                            size: 25,
-                          ),
-                          prefixIconColor: MaterialStateColor.resolveWith(
-                              (states) => states.contains(MaterialState.focused)
-                                  ? const Color.fromARGB(255, 53, 86, 217)
-                                  : Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.black45),
-                              borderRadius: BorderRadius.circular(25)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 53, 86, 217)),
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black45),
-                          hintText: 'Enter email here',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25),
-                          ),
+                        labelStyle: const TextStyle(color: Colors.black45),
+                        hintText: 'Enter Phone Number here',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      TextFormField(
-                        controller: _pwd,
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          labelText: 'Password',
-                          prefixIcon: const Icon(
-                            Icons.security,
-                            size: 25,
-                          ),
-                          prefixIconColor: MaterialStateColor.resolveWith(
-                              (states) => states.contains(MaterialState.focused)
-                                  ? const Color.fromARGB(255, 53, 86, 217)
-                                  : Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.black45),
-                              borderRadius: BorderRadius.circular(25)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 53, 86, 217)),
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black45),
-                          hintText: 'Enter password here',
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                passwordVisible = !passwordVisible;
-                              });
-                            },
-                            icon: Icon(
-                              passwordVisible
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: const Color.fromARGB(255, 53, 86, 217),
-                            ),
-                          ),
+                      obscureText: false,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextFormField(
+                      controller: _email,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(10),
+                        labelText: 'Email',
+                        prefixIcon: const Icon(
+                          Icons.email_outlined,
+                          size: 25,
                         ),
-                        obscureText: passwordVisible,
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      TextFormField(
-                        controller: _cnfpwd,
-                        autofocus: false,
-                        decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          labelText: 'Confirm Password',
-                          prefixIcon: const Icon(
-                            Icons.security,
-                            size: 25,
-                          ),
-                          prefixIconColor: MaterialStateColor.resolveWith(
-                              (states) => states.contains(MaterialState.focused)
-                                  ? const Color.fromARGB(255, 53, 86, 217)
-                                  : Colors.grey),
-                          enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  const BorderSide(color: Colors.black45),
-                              borderRadius: BorderRadius.circular(25)),
-                          focusedBorder: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color.fromARGB(255, 53, 86, 217)),
-                          ),
-                          labelStyle: const TextStyle(color: Colors.black45),
-                          hintText: 'Enter Confirm Password here',
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                visiblePassword = !visiblePassword;
-                              });
-                            },
-                            icon: Icon(
-                              visiblePassword
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: const Color.fromARGB(255, 53, 86, 217),
-                            ),
-                          ),
+                        prefixIconColor: MaterialStateColor.resolveWith(
+                            (states) => states.contains(MaterialState.focused)
+                                ? const Color.fromARGB(255, 53, 86, 217)
+                                : Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black45),
+                            borderRadius: BorderRadius.circular(25)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 53, 86, 217)),
                         ),
-                        obscureText: visiblePassword,
+                        labelStyle: const TextStyle(color: Colors.black45),
+                        hintText: 'Enter email here',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
                       ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          BlocProvider.of<SignUpBloc>(context).add(
-                            SignUpBtnEvent(
-                                name: _name.text,
-                                email: _email.text,
-                                mobileNo: _phone.text,
-                                password: _pwd.text,
-                                confirmPassword: _cnfpwd.text),
-                          );
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width * 0.9,
-                          height: 41,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(22),
-                            gradient: const LinearGradient(colors: [
-                              Color.fromARGB(255, 50, 82, 223),
-                              Color.fromARGB(255, 53, 86, 217),
-                            ]),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              'REGISTER',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                            ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextFormField(
+                      controller: _pwd,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(10),
+                        labelText: 'Password',
+                        prefixIcon: const Icon(
+                          Icons.security,
+                          size: 25,
+                        ),
+                        prefixIconColor: MaterialStateColor.resolveWith(
+                            (states) => states.contains(MaterialState.focused)
+                                ? const Color.fromARGB(255, 53, 86, 217)
+                                : Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black45),
+                            borderRadius: BorderRadius.circular(25)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 53, 86, 217)),
+                        ),
+                        labelStyle: const TextStyle(color: Colors.black45),
+                        hintText: 'Enter password here',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              passwordVisible = !passwordVisible;
+                            });
+                          },
+                          icon: Icon(
+                            passwordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: const Color.fromARGB(255, 53, 86, 217),
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 22,
+                      obscureText: passwordVisible,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    TextFormField(
+                      controller: _cnfpwd,
+                      autofocus: false,
+                      decoration: InputDecoration(
+                        isDense: true,
+                        contentPadding: const EdgeInsets.all(10),
+                        labelText: 'Confirm Password',
+                        prefixIcon: const Icon(
+                          Icons.security,
+                          size: 25,
+                        ),
+                        prefixIconColor: MaterialStateColor.resolveWith(
+                            (states) => states.contains(MaterialState.focused)
+                                ? const Color.fromARGB(255, 53, 86, 217)
+                                : Colors.grey),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.black45),
+                            borderRadius: BorderRadius.circular(25)),
+                        focusedBorder: const OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Color.fromARGB(255, 53, 86, 217)),
+                        ),
+                        labelStyle: const TextStyle(color: Colors.black45),
+                        hintText: 'Enter Confirm Password here',
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              visiblePassword = !visiblePassword;
+                            });
+                          },
+                          icon: Icon(
+                            visiblePassword
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            color: const Color.fromARGB(255, 53, 86, 217),
+                          ),
+                        ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text(
-                            "Already have an Account? ",
+                      obscureText: visiblePassword,
+                    ),
+                    const SizedBox(
+                      height: 40,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        BlocProvider.of<SignUpBloc>(context).add(
+                          SignUpBtnEvent(
+                              name: _name.text,
+                              email: _email.text,
+                              mobileNo: _phone.text,
+                              password: _pwd.text,
+                              confirmPassword: _cnfpwd.text),
+                        );
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width * 0.9,
+                        height: 41,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(22),
+                          gradient: const LinearGradient(colors: [
+                            Color.fromARGB(255, 50, 82, 223),
+                            Color.fromARGB(255, 53, 86, 217),
+                          ]),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'REGISTER',
                             style: TextStyle(
-                              color: Colors.black45,
-                              fontSize: 14,
+                              color: Colors.white,
+                              fontSize: 18,
                             ),
                           ),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).pushAndRemoveUntil(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        BlocProvider<SignInBloc>(
-                                      create: (context) => SignInBloc(),
-                                      child: const SignInScreen(),
-                                    ),
-                                  ),
-                                  (route) => false);
-                            },
-                            child: const Text(
-                              'Sign In',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 53, 86, 217),
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 22,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Already have an Account? ",
+                          style: TextStyle(
+                            color: Colors.black45,
+                            fontSize: 14,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      BlocProvider<SignInBloc>(
+                                    create: (context) => SignInBloc(),
+                                    child: const SignInScreen(),
+                                  ),
+                                ),
+                                (route) => false);
+                          },
+                          child: const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 53, 86, 217),
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
             ),

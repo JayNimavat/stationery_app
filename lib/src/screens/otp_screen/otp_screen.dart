@@ -56,119 +56,121 @@ class _OtpScreenState extends State<OtpScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: const Color(0xfff7f6fb),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Color.fromARGB(255, 53, 86, 217),
+      body: SingleChildScrollView(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      color: Color.fromARGB(255, 53, 86, 217),
+                    ),
                   ),
                 ),
-              ),
-              Image.asset(
-                'assets/img/verify.png',
-                height: 250,
-                width: 250,
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              const Text(
-                'OTP VERIFICATION',
-                style: TextStyle(
-                  fontSize: 23,
-                  fontWeight: FontWeight.bold,
+                Image.asset(
+                  'assets/img/verify.png',
+                  height: MediaQuery.of(context).size.height * 0.3,
+                  width: MediaQuery.of(context).size.width,
                 ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              const Text(
-                'Enter Your Confirmation Code...',
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.black45,
+                const SizedBox(
+                  height: 25,
                 ),
-              ),
-              const SizedBox(
-                height: 35,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _textFieldOTP(first: true, last: false, context: context),
-                  _textFieldOTP(first: false, last: false, context: context),
-                  _textFieldOTP(first: false, last: false, context: context),
-                  _textFieldOTP(first: false, last: true, context: context),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              if (myDuration > 0)
-                Text(
-                  "Timeout in ${myDuration.toString().padLeft(2, '0')}",
-                  style: const TextStyle(
-                    fontSize: 16,
+                const Text(
+                  'OTP VERIFICATION',
+                  style: TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  'Enter Your Confirmation Code...',
+                  style: TextStyle(
+                    fontSize: 14,
                     color: Colors.black45,
                   ),
-                )
-              else
+                ),
+                const SizedBox(
+                  height: 35,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _textFieldOTP(first: true, last: false, context: context),
+                    _textFieldOTP(first: false, last: false, context: context),
+                    _textFieldOTP(first: false, last: false, context: context),
+                    _textFieldOTP(first: false, last: true, context: context),
+                  ],
+                ),
+                const SizedBox(
+                  height: 25,
+                ),
+                if (myDuration > 0)
+                  Text(
+                    "Timeout in ${myDuration.toString().padLeft(2, '0')}",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black45,
+                    ),
+                  )
+                else
+                  InkWell(
+                    onTap: () {
+                      resetTimer();
+                    },
+                    child: const Text(
+                      'RESEND OTP',
+                      style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                const SizedBox(
+                  height: 35,
+                ),
                 InkWell(
                   onTap: () {
-                    resetTimer();
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                          builder: (context) => const BottomNavigation(
+                              // selectedIndex: 0,
+                              ),
+                        ),
+                        (route) => false);
                   },
-                  child: const Text(
-                    'RESEND OTP',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: Colors.black,
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.9,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(22),
+                      gradient: const LinearGradient(colors: [
+                        Color.fromARGB(255, 50, 82, 223),
+                        Color.fromARGB(255, 53, 86, 217),
+                      ]),
                     ),
-                  ),
-                ),
-              const SizedBox(
-                height: 35,
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(
-                        builder: (context) => const BottomNavigation(
-                            // selectedIndex: 0,
-                            ),
-                      ),
-                      (route) => false);
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(22),
-                    gradient: const LinearGradient(colors: [
-                      Color.fromARGB(255, 50, 82, 223),
-                      Color.fromARGB(255, 53, 86, 217),
-                    ]),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Verify',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                    child: const Center(
+                      child: Text(
+                        'Verify',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

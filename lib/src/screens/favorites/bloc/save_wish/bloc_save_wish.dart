@@ -23,6 +23,7 @@ class WishBloc extends Bloc<WishEvent, WishState> {
               WishErrorState(error: 'An error occurred while saving the wish'));
         }
       } catch (error) {
+        print('--ERROR--:$error');
         emit(WishErrorState(error: 'An error occurred'));
       }
     });
@@ -39,6 +40,7 @@ class WishBloc extends Bloc<WishEvent, WishState> {
               error: 'An error occurred while removing the wish'));
         }
       } catch (error) {
+        print('--ERROR2--:$error');
         emit(WishErrorState(error: 'An error occurred'));
       }
     });
@@ -75,18 +77,18 @@ class WishBloc extends Bloc<WishEvent, WishState> {
     return model;
   }
 
-  isProductInWishlist(String productId) async {
-    WishListModel model;
-    Map data = {
-      'user_id': '12',
-      'product_id': productId,
-    };
-
-    const apiUrl = "${SchoolEcommBaseAppUrl.baseAppUrl}wishList";
-    final Uri url = Uri.parse(apiUrl);
-    final response = await http.post(url, body: data);
-
-    model = WishListModel.fromJsonMap(json.decode(response.body));
-    return model;
-  }
+  // isProductInWishlist(String productId) async {
+  //   WishListModel model;
+  //   Map data = {
+  //     'user_id': '12',
+  //     'product_id': productId,
+  //   };
+  //
+  //   const apiUrl = "${SchoolEcommBaseAppUrl.baseAppUrl}wishList";
+  //   final Uri url = Uri.parse(apiUrl);
+  //   final response = await http.post(url, body: data);
+  //
+  //   model = WishListModel.fromJsonMap(json.decode(response.body));
+  //   return model;
+  // }
 }
